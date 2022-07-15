@@ -1,0 +1,68 @@
+
+{%extends 'base.html'%}
+
+{% load static %}
+
+{% block content %}
+
+<br>
+
+<div class="container bg-light myfont">
+    
+
+    <div class="container bg-light">
+        <div>
+           
+                <label for="formFileLg" class="form-label">GENERATE ASCII-ART BY IMAGE FILE:</label>
+                {% csrf_token %}
+                <input class="form-control form-control-lg" name ="fileupload" id="fileupload" type="file">
+                <label for="formFileLg" class="form-label">OUTPUT FILE WIDTH:</label>
+                <input type="number" class="form-control" name ="image_width" id="image_width" min = '50' max = '250' value = '200' placeholder="enter width of output ascii art">
+            </br>
+                <button type="button" id = "upload-button" onclick="uploadFile()" class="btn btn-info">START!</button>
+            </div>
+
+            <div id='response'>
+            </div>
+
+
+            <div id='response_link'>
+            </div>
+
+      </div>
+
+
+    </br>
+</div>
+
+    <script>
+
+        function uploadFile()
+         {
+
+            var formData = new FormData();
+            formData.append("file", fileupload.files[0]);
+            formData.append("image_width",document.getElementsByName("image_width")[0].value);
+
+            $.ajax({
+                type: "POST",
+                url: "/do_ascii_art_web/",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    
+                    console.log(response);
+                    $("#response").html(response);
+                    
+                },
+                error: function(errResponse) {
+                    console.log(errResponse);
+                }
+            });
+
+         }
+
+           
+        </script>     
+{% endblock%}
