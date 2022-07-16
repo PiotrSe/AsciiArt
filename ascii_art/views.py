@@ -37,12 +37,19 @@ def do_animated_ascii_art(request):
         print(str(e))
         return HttpResponse("no file selected")
       
-    animated_ascii_art = Animated_ascii_art()
+    animated_ascii_art = Animated_ascii_art(str(uploaded_file))
     context = animated_ascii_art.do_animated_ascii_art(uploaded_file,image_width)
     
     if context['animated_ascii_file']!= None: # image file correct
         link = '<a href=/%s>Data ready - click</a>' % context['animated_ascii_file']
-        #link = context['filepath']
+        print(link)
+        
+#         link = """<div style='height: 100px; width: 250px; border: 1px solid black; 
+#    background-image: url(/%s);'></div> """ % context['animated_ascii_file']
+#         print(link)
+        
+   
+   
         
     else: # file incorrect return err
         link = '<b>' + context['message'] + '</b>'
