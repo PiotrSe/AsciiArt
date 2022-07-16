@@ -67,32 +67,38 @@ class Animated_ascii_art:
         for ascii_frame in ascii_frames:
             #create empty png file with same name as ascii frame file
             ascii_frame_plain_file = ascii_frame.split('/')[2][:-4] + '.png'   
-            
-            img = PIL.Image.new("RGB", (x, y), (255, 255, 255))
+        
             output_png_frame = self.output_png_ascii_frames + '/' + ascii_frame_plain_file
+
+            self.write_text_on_plain_png(ascii_frame,output_png_frame)
             
-            draw = PIL.ImageDraw.Draw(img)
-            font = PIL.ImageFont.load_default()
-            draw.text((0, 0),"Sample Text",(255,255,255),font=font)
-            
-            
-            img.save(output_png_frame  , "PNG") 
             output_png_ascii_frames.append(output_png_frame)
         return output_png_ascii_frames
-            
     
-    #wpisanie klatki ascii do pustego png
-    def write_plain_ascii_in_image_file(self,ascii_frame,img):
-        draw = PIL.ImageDraw.Draw(img)
-        #font = PIL.ImageFont.load_default()
-        draw.text((0, 0),"Sample Text",(255,255,255))
-        return img
-
+    
+     #create empty png file with same name as ascii frame file and fill with ascii
+    def write_text_on_plain_png(self,ascii_frame,output_png_frame):
+        
+        with open (ascii_frame) as f:
+            
+            lines = [line.rstrip() for line in f]
+        print("11111111111111111111111111111111111111111111111111LEN")  
+        print(len(lines[0]))
+        x = 6 * len(lines[0])
+        y = 4* len(lines[0])   
+        img = PIL.Image.new("RGB", (x, y), (255, 255, 255))        
+        for index,l in enumerate(lines):
+                        
+            draw = PIL.ImageDraw.Draw(img)    
+            draw.text((0, index*6),l, (0,0,0), )
+        img.save(output_png_frame  , "PNG") 
+           
+        
             
     
     #łączenie klatek w animacje
     def create_gif_animation_from_list(self,images):
-        images[0].save('media/animations/output.gif',
+        images[0].save(self.gif_output_dir +  '/output.gif',
                save_all=True, append_images=images[1:], optimize=False, duration=40, loop=0)
         
      
