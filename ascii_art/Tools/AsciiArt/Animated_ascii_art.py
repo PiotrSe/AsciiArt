@@ -14,8 +14,7 @@ class Animated_ascii_art:
         self.output_png_ascii_frames = 'media/animations/output_png_ascii_frames'
         self.gif_output_dir = 'media/animations/gif_output' 
         self.message ="completed"
-    
-        
+        self.current_gif_duration_list=[] #keep duration parameter for current gif file uploaded
         self.gif_output_name =  filename.split('.')[0] + self.add_unique_name()
         
         
@@ -33,13 +32,12 @@ class Animated_ascii_art:
         
     
     
-    def do_animated_ascii_art(self,animation,width_image=100):
-        
-       
+    def do_animated_ascii_art(self,animation,width_image=50):
+        self.width_image = width_image
         animation_frames = self.extract_animation(animation)
         self.file_size = self.get_file_size(animation_frames[0])
-        ascii_frames= self.convert_frames_to_ascii(animation_frames) #return asci_art_list of dict
-        animated_ascii_png_list = self.convert_ascii_frames_to_png_frames(ascii_frames,1280,1024) #zwraca sciezki a powinien tez imAGES
+        ascii_frames= self.convert_frames_to_ascii(animation_frames,width_image) #return asci_art_list of dict
+        animated_ascii_png_list = self.convert_ascii_frames_to_png_frames(ascii_frames,1280,1024)
         gif_ascii_art_animation = self.create_gif_animation_from_png_list(animated_ascii_png_list[1])
         
         context = {"animated_ascii_file":gif_ascii_art_animation,
@@ -54,9 +52,11 @@ class Animated_ascii_art:
         animation_frames = []
         im = PIL.Image.open(animation)
         frames_quantity  = im.n_frames
+        frame_duration =0
         for i in range(frames_quantity):
             frame = im.seek(i)
-            
+            frame_duration = im.info['duration']
+            self.current_gif_duration_list.append(frame_duration)
             frame_file = self.input_png_frames_dir + '/frame_' + str(i) + '.png'
             im.save(frame_file)
             animation_frames.append(frame_file)
@@ -65,14 +65,14 @@ class Animated_ascii_art:
             
 
     #return list of frames(path to files)
-    def convert_frames_to_ascii(self,animation_frames):
+    def convert_frames_to_ascii(self,animation_frames,width_image):
         print("converting frames to ascii...")
         print(animation_frames)
         ascii_art_list =[]
         
         for frame_file in animation_frames:
-           # ascii_frames.append(self.ascii_art.do_ascii_art(frame_file)['filepath'])
-            ascii_art_list.append(self.ascii_art.do_ascii_art(frame_file))
+
+            ascii_art_list.append(self.ascii_art.do_ascii_art(frame_file,width_image))
             
             
         print("path to ascii files:")
@@ -130,7 +130,7 @@ class Animated_ascii_art:
         x = mx * len(lines[0])
         y = my * len(lines[0])   
 
-        img = PIL.Image.new("RGB", (x, y), (255, 255, 255))        
+        img = PIL.Image.new("RGBA", (x, y), (0, 255, 0 ,0))        
         for index,l in enumerate(lines):
                         
             draw = PIL.ImageDraw.Draw(img)    
@@ -146,7 +146,7 @@ class Animated_ascii_art:
         gif_ascii_art_animation = self.gif_output_dir + '/' + self.gif_output_name
         
         png_list_images[0].save(gif_ascii_art_animation,
-               save_all=True, append_images=png_list_images[1:], optimize=False, duration=40, loop=0)
+               save_all=True, append_images=png_list_images[1:], optimize=False, duration=self.current_gif_duration_list, loop=0)
         return gif_ascii_art_animation
         
      
