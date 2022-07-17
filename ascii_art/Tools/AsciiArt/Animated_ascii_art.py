@@ -146,7 +146,7 @@ class Animated_ascii_art:
         gif_ascii_art_animation = self.gif_output_dir + '/' + self.gif_output_name
         
         png_list_images[0].save(gif_ascii_art_animation,
-               save_all=True, append_images=png_list_images[1:], optimize=False, duration=self.current_gif_duration_list, loop=0)
+               save_all=True, append_images=png_list_images[1:], optimize=False, duration=100, loop=0)
         return gif_ascii_art_animation
         
      
