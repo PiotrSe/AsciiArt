@@ -15,7 +15,7 @@ class Animated_ascii_art:
         self.gif_output_dir = 'media/animations/gif_output' 
         self.message ="completed"
         self.current_gif_duration_list=[] #keep duration parameter for current gif file uploaded
-        self.gif_output_name =  filename.split('.')[0] + self.add_unique_name()
+        self.gif_output_name =  filename.split('.')[0] + self.add_unique_name() +".gif"
         
         
         print("PILLOW VER:")
@@ -32,7 +32,7 @@ class Animated_ascii_art:
         return {"width":width,"height":height}
 
     def add_unique_name(self):
-       return datetime.now().strftime("%H_%M_%S") +"_"+ str(datetime.now().microsecond) + '.gif'
+       return datetime.now().strftime("%H_%M_%S") +"_"+ str(datetime.now().microsecond)
         
     
     
@@ -61,7 +61,7 @@ class Animated_ascii_art:
             frame = im.seek(i)
             frame_duration = im.info['duration']
             self.current_gif_duration_list.append(frame_duration)
-            frame_file = self.input_png_frames_dir + '/frame_' + str(i) + '.png'
+            frame_file = self.input_png_frames_dir + '/frame_' + str(i) + self.add_unique_name() +  '.png'
             im.save(frame_file)
             animation_frames.append(frame_file)
         im.close()
