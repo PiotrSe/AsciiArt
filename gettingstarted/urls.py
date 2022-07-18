@@ -27,9 +27,13 @@ urlpatterns = [
     path('do_ascii_art/',ascii_art.views.do_ascii_art,name = 'do_ascii_art'),
     path('do_ascii_art_web/',ascii_art.views.do_ascii_art_web,name = 'do_ascii_art_web'),
     path('do_animated_ascii_art/',ascii_art.views.do_animated_ascii_art,name = 'do_animated_ascii_art'),
-    path("",ascii_art.views.ascii,name= "ascii"),
+    
+    
+    path("",ascii_art.views.menu,name= "menu"),
+    path("menu/",ascii_art.views.menu,name= "menu"),
     path("ascii/",ascii_art.views.ascii,name= "ascii"),
     path("animated_ascii/",ascii_art.views.animated_ascii,name= "animated_ascii"),
+   
         
 ]
 

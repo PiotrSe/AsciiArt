@@ -1,4 +1,5 @@
 from django.urls import path, include
+import ascii_art.views
 
 from . import views
-#path('',views.ascii_art)
+path('',ascii_art.views.menu)

@@ -9,6 +9,9 @@ from ascii_art.Tools.AsciiArt.Ascii_art import Ascii_art
 from ascii_art.Tools.AsciiArt.Animated_ascii_art import Animated_ascii_art
 # Create your views here.
 
+def menu(request):
+    return render(request,'menu.html')
+
 def ascii(request):
     return render(request,'ascii.html')
 

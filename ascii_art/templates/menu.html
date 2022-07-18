@@ -1,0 +1,39 @@
+
+
+{%extends 'base.html'%}
+
+{% load static %}
+
+{% block content %}
+
+
+<br>
+
+
+<div class="container bg-light myfont">
+    
+    <div class="container bg-light">
+        <div>
+           
+            <label for="formFileLg" class="form-label">GENERATE ASCII-ART BY IMAGE FILE:</label>
+            </br>
+                <button type="button" id = "upload-button" onClick="window.open('/ascii/')" class="btn btn-info">make ascii art</button>
+            </div>
+
+            <br>
+
+
+            <label for="formFileLg" class="form-label">GENERATE ANIMATED ASCI BY GIF FILE:</label>
+        </br>
+            <button type="button" id = "upload-button" onClick="window.open('/ascii/')" class="btn btn-info">make animation ascii art</button>
+        </div>
+
+
+
+      </div>
+
+
+    </br>
+</div>
+
+{% endblock%}
