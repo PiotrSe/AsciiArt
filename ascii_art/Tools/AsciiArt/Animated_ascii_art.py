@@ -131,8 +131,10 @@ class Animated_ascii_art:
             mx=6
             my= int( (self.file_size['height'] * mx) // self.file_size['width'])
 
+        
+        ratio_factor = int((len(lines) * 190)/270)
         x = mx * len(lines[0])
-        y = my * len(lines[0])   
+        y = my * len(lines[0]) + ratio_factor
 
         img = PIL.Image.new("RGBA", (x, y), (0, 255, 0 ,0))        
         for index,l in enumerate(lines):
