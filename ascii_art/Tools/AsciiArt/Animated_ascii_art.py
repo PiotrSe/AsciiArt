@@ -113,6 +113,12 @@ class Animated_ascii_art:
         return output_png_ascii_frames,images_list
     
     
+    def crop_image(self,img,x1,y1,x2,y2): 
+        area = (x1, y1, x2, y2)
+        cropped_img = img.crop(area)
+        #cropped_img.show()
+        return cropped_img
+    
      #create empty png file with same name as ascii frame file and fill with ascii
     def write_text_on_plain_png(self,ascii_frame,output_png_frame):
         
@@ -127,6 +133,7 @@ class Animated_ascii_art:
         if self.file_size['width'] == self.file_size['height']:
             mx = 6
             my = 6
+           
         else:
             mx=6
             my= int( (self.file_size['height'] * mx) // self.file_size['width'])
@@ -136,15 +143,44 @@ class Animated_ascii_art:
         x = mx * len(lines[0])
         y = my * len(lines[0]) + ratio_factor
 
-        img = PIL.Image.new("RGBA", (x, y), (0, 255, 0 ,0))        
+        img = PIL.Image.new("RGBA", (x, y), (0, 255, 0 ,0))  
+        latest_index=None      
         for index,l in enumerate(lines):
                         
             draw = PIL.ImageDraw.Draw(img)    
             draw.text((0, index*6),l, (0,0,0), )
+            
+        PIL.rgb_im = img.convert('RGB')
+        r, g, b = PIL.rgb_im.getpixel((self.file_size['width'],self.file_size['height']))
+        print(r, g, b)
+      
+        crop_val = self.crop_val(img)
+        print("crop val")
+        print (crop_val)
+        if (crop_val >0): # przycinanie gdy obrazek ascii mniejszy niz fizyczna wysokosc zdjecia
+            print("crop")
+            img = self.crop_image(img,0,0,x,y - crop_val*6)
+            
+        
         img.save(output_png_frame  , "PNG") 
         return img
-           
         
+    #compute how many pixels must be cut from the bootom   
+    def crop_val(self,img):
+        PIL.rgb_im = img.convert('RGB')
+        r, g, b = PIL.rgb_im.getpixel((self.file_size['width'],self.file_size['height']))
+        print(r, g, b)
+        if g==255:
+            i=0
+            while g==255:
+                r, g, b = PIL.rgb_im.getpixel((self.file_size['width'],self.file_size['height']-i))
+                i = i +1
+            return  i
+        else:
+            return 0
+                
+                
+            
     #merge frames in animation
     def create_gif_animation_from_png_list(self,png_list_images):
         #gif_ascii_art_animation = self.gif_output_dir +  '/animated_ascii_art.gif'
