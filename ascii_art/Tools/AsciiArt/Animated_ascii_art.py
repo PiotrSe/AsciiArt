@@ -159,7 +159,7 @@ class Animated_ascii_art:
         print (crop_val)
         if (crop_val >0): # przycinanie gdy obrazek ascii mniejszy niz fizyczna wysokosc zdjecia
             print("crop")
-            img = self.crop_image(img,0,0,x,y - crop_val*6)
+            img = self.crop_image(img,0,0,x,y - crop_val*15)
             
         
         img.save(output_png_frame  , "PNG") 
