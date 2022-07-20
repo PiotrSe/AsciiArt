@@ -1,5 +1,5 @@
 
-import PIL.Image 
+import PIL.Image,PIL.ImageDraw,PIL.ImageFont
 import PIL.ImageDraw
 import PIL.ImageFont
 from datetime import datetime
@@ -13,7 +13,6 @@ class Animated_ascii_art:
         self.input_png_frames_dir = 'media/animations/input_png_frames'
         self.output_png_ascii_frames = 'media/animations/output_png_ascii_frames'
         self.gif_output_dir = 'media/animations/gif_output' 
-        self.message ="completed"
         self.current_gif_duration_list=[] #keep duration parameter for current gif file uploaded
         self.gif_output_name =  filename.split('.')[0] + self.add_unique_name() +".gif"
         
@@ -21,10 +20,7 @@ class Animated_ascii_art:
         print("PILLOW VER:")
         print(PIL.__version__)
         
-        
-
-  
-
+    
     def get_file_size(self,filename):
         im = PIL.Image.open(filename)
         im.close()
@@ -34,22 +30,31 @@ class Animated_ascii_art:
     def add_unique_name(self):
        return datetime.now().strftime("%H_%M_%S") +"_"+ str(datetime.now().microsecond)
         
-    
-    
+
     def do_animated_ascii_art(self,animation,width_image=50):
-        self.width_image = width_image
-        animation_frames = self.extract_animation(animation)
-        self.file_size = self.get_file_size(animation_frames[0])
-        ascii_frames= self.convert_frames_to_ascii(animation_frames,width_image) #return asci_art_list of dict
-        animated_ascii_png_list = self.convert_ascii_frames_to_png_frames(ascii_frames,1280,1024)
-        gif_ascii_art_animation = self.create_gif_animation_from_png_list(animated_ascii_png_list[1])
         
-        context = {"animated_ascii_file":gif_ascii_art_animation,
-                   "ascii_frames":ascii_frames,
-                   "message": self.message
-                   }
-    
+        context = {"animated_ascii_file":None,
+            "ascii_frames":None,
+            "message": "unrecognized image format"
+                }
+        try:
+            self.width_image = width_image
+            animation_frames = self.extract_animation(animation)
+            self.file_size = self.get_file_size(animation_frames[0])
+            ascii_frames= self.convert_frames_to_ascii(animation_frames,width_image) #return asci_art_list of dict
+            animated_ascii_png_list = self.convert_ascii_frames_to_png_frames(ascii_frames,1280,1024)
+            gif_ascii_art_animation = self.create_gif_animation_from_png_list(animated_ascii_png_list[1])
+            
+            context = {"animated_ascii_file":gif_ascii_art_animation,
+                    "ascii_frames":ascii_frames,
+                    "message": "completed"
+                    }
+            
+        except Exception as e:
+            print(str(e))
+        
         return context
+        
     
     # extract frames from gif animation
     def extract_animation(self,animation):
@@ -139,28 +144,25 @@ class Animated_ascii_art:
             my= int( (self.file_size['height'] * mx) // self.file_size['width'])
 
         
-        ratio_factor = int((len(lines) * 190)/270)
+        #ratio_factor = int((len(lines) * 190)/270)
         x = mx * len(lines[0])
-        y = my * len(lines[0]) + ratio_factor
+        y = my * len(lines[0]) #+ ratio_factor
+        
+        #font = PIL.ImageFont.truetype("arial.ttf", 10)
 
         img = PIL.Image.new("RGBA", (x, y), (0, 255, 0 ,0))  
         latest_index=None      
         for index,l in enumerate(lines):
                         
             draw = PIL.ImageDraw.Draw(img)    
-            draw.text((0, index*6),l, (0,0,0), )
-            
-        PIL.rgb_im = img.convert('RGB')
-        r, g, b = PIL.rgb_im.getpixel((self.file_size['width'],self.file_size['height']))
-        print(r, g, b)
-      
-        crop_val = self.crop_val(img)
-        print("crop val")
-        print (crop_val)
-        if (crop_val >0): # przycinanie gdy obrazek ascii mniejszy niz fizyczna wysokosc zdjecia
-            print("crop")
-            img = self.crop_image(img,0,0,x,y - crop_val*15)
-            
+            draw.text((0, index*6),l, (0,0,0),spacing =10,align ="center")
+        
+        # crop_val = self.crop_val(img)
+        # print("crop val")
+        # print (crop_val)
+        # if (crop_val >0): # przycinanie gdy obrazek ascii mniejszy niz fizyczna wysokosc zdjecia
+        #     print("crop")
+        #     img = self.crop_image(img,0,0,x,y - crop_val*15)
         
         img.save(output_png_frame  , "PNG") 
         return img

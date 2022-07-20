@@ -51,9 +51,6 @@ def do_animated_ascii_art(request):
 #    background-image: url(/%s);'></div> """ % context['animated_ascii_file']
 #         print(link)
         
-   
-   
-        
     else: # file incorrect return err
         link = '<b>' + context['message'] + '</b>'
 
