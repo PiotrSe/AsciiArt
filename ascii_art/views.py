@@ -25,12 +25,19 @@ def animated_ascii(request):
 
 @csrf_exempt
 def sum(request):
-    x= request.POST['x']
-    y= request.POST['y']
-    
-    sum = int(x) +int(y)
-    data = str(sum)
-    result = json.dumps(data)
+    try:
+        x= request.POST['x']
+        y= request.POST['y']
+        
+        sum = int(x) +int(y)
+        data = str(sum)
+        result = json.dumps(data)
+        
+    except Exception as e:
+        print(str(e))
+        result = json.dumps("errora masz")
+        pass
+        
     return HttpResponse(result) 
 
 #created for web site - return href link to ascii art file
