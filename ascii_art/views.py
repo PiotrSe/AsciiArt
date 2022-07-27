@@ -36,7 +36,7 @@ def sum(request):
             
         except Exception as e:
             print(str(e))
-            result = json.dumps("errora masz: "  + str(e))
+            result = json.dumps("errora masz: "  + str(request.POST))
             
             
     return HttpResponse(result) 
