@@ -27,6 +27,7 @@ urlpatterns = [
     path('do_ascii_art/',ascii_art.views.do_ascii_art,name = 'do_ascii_art'),
     path('do_ascii_art_web/',ascii_art.views.do_ascii_art_web,name = 'do_ascii_art_web'),
     path('do_animated_ascii_art/',ascii_art.views.do_animated_ascii_art,name = 'do_animated_ascii_art'),
+     path('test_api/',ascii_art.views.test_api,name = 'test_api'),
     
     
     path("",ascii_art.views.menu,name= "menu"),
