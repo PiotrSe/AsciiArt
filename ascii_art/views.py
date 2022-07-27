@@ -26,6 +26,7 @@ def ascii(request):
 def animated_ascii(request):
     return render(request,'animated_ascii.html')
 
+@csrf_exempt
 def test_api(request):
     data ='test'
     result = json.dumps(data)
