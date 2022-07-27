@@ -20,15 +20,16 @@ def ascii(request):
     return render(request,'ascii.html')
 
 
-
-    
-
 def animated_ascii(request):
     return render(request,'animated_ascii.html')
 
 @csrf_exempt
-def test_api(request):
-    data ='test'
+def sum(request):
+    x= request.POST['x']
+    y= request.POST['y']
+    
+    sum = int(x) +int(y)
+    data = str(sum)
     result = json.dumps(data)
     return HttpResponse(result) 
 
