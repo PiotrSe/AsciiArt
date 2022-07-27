@@ -1,12 +1,16 @@
 from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.sites.shortcuts import get_current_site
+import requests
+
 from ascii_art.Tools.AsciiArt import Ascii_art
 import json
 from ascii_art.Tools.AsciiArt.Ascii_art import Ascii_art
 from ascii_art.Tools.AsciiArt.Animated_ascii_art import Animated_ascii_art
+
+
 # Create your views here.
 
 def menu(request):
@@ -16,8 +20,16 @@ def ascii(request):
     return render(request,'ascii.html')
 
 
+
+    
+
 def animated_ascii(request):
     return render(request,'animated_ascii.html')
+
+def test_api(request):
+    data ='test'
+    result = json.dumps(data)
+    return HttpResponse(result) 
 
 #created for web site - return href link to ascii art file
 
@@ -45,12 +57,22 @@ def do_animated_ascii_art(request):
     
     if context['animated_ascii_file']!= None: # image file correct
         link = '<a href=/%s>Data ready - click</a>' % context['animated_ascii_file']
+    
+        print("BASEURL")
+        baseurl = request.build_absolute_uri()
+        
+        splitted =  str(baseurl).split('/')
+        
+        addr = splitted[2]
+    
+        path_to_gif ='http://' +  addr + '/' + context['animated_ascii_file']
+        print(path_to_gif)
+        
+        link = "<img style='display: block;-webkit-user-select: none;margin: auto;'src='%s'>" % path_to_gif 
+        
+        print("LINK DO GIFA")
         print(link)
-        
-#         link = """<div style='height: 100px; width: 250px; border: 1px solid black; 
-#    background-image: url(/%s);'></div> """ % context['animated_ascii_file']
-#         print(link)
-        
+           
     else: # file incorrect return err
         link = '<b>' + context['message'] + '</b>'
 

@@ -5,6 +5,7 @@ import PIL.ImageFont
 from datetime import datetime
 import os
 from ascii_art.Tools.AsciiArt.Ascii_art import Ascii_art
+import socket
 
 class Animated_ascii_art:
     
@@ -29,7 +30,31 @@ class Animated_ascii_art:
 
     def add_unique_name(self):
        return datetime.now().strftime("%H_%M_%S") +"_"+ str(datetime.now().microsecond)
+   
+   
+   
+    def get_server_ip(self):
+    
+      st = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+      
+      try:   
+              
+        st.connect(('10.255.255.255', 1))
+        IP = st.getsockname()[0]
+      except Exception:
+             IP = '127.0.0.1'
+      finally:
+            st.close()
+            return IP
+      
         
+    def get_server_ip_(self):
+        
+        return "192.168.2.46"
+
+        
+    
+
 
     def do_animated_ascii_art(self,animation,width_image=50):
         
@@ -49,7 +74,7 @@ class Animated_ascii_art:
                     "ascii_frames":ascii_frames,
                     "message": "completed"
                     }
-            
+             
         except Exception as e:
             print(str(e))
         

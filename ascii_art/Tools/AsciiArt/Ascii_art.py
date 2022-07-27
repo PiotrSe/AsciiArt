@@ -35,9 +35,11 @@ class Ascii_art:
     
     def pixel_to_ascii(self,image):
         pixels = image.getdata()
+        
         ascii_str = ""
         for pixel in pixels:
-            ascii_str += self.ASCII_CHARS[pixel//25]
+
+          ascii_str += self.ASCII_CHARS[pixel//25]
         return ascii_str
         
     def do_ascii_art(self,image,width_image=50):
