@@ -26,10 +26,12 @@ def animated_ascii(request):
 @csrf_exempt
 def sum(request):
     if request.method == 'POST':
+        print(request.POST)
         try:
+            
             x= request.POST['x']
             y= request.POST['y']
-            
+               
             sum = int(x) +int(y)
             data = str(sum)
             result = json.dumps(data)
