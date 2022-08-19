@@ -30,30 +30,6 @@ class Animated_ascii_art:
 
     def add_unique_name(self):
        return datetime.now().strftime("%H_%M_%S") +"_"+ str(datetime.now().microsecond)
-   
-   
-   
-    def get_server_ip(self):
-    
-      st = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-      
-      try:   
-              
-        st.connect(('10.255.255.255', 1))
-        IP = st.getsockname()[0]
-      except Exception:
-             IP = '127.0.0.1'
-      finally:
-            st.close()
-            return IP
-      
-        
-    def get_server_ip_(self):
-        
-        return "192.168.2.46"
-
-        
-    
 
 
     def do_animated_ascii_art(self,animation,width_image=50):
@@ -105,9 +81,7 @@ class Animated_ascii_art:
         ascii_art_list =[]
         
         for frame_file in animation_frames:
-
-            ascii_art_list.append(self.ascii_art.do_ascii_art(frame_file,width_image))
-            
+            ascii_art_list.append(self.ascii_art.do_ascii_art(frame_file,width_image))        
             
         print("path to ascii files:")
         for asciiframe in ascii_art_list:
@@ -120,8 +94,6 @@ class Animated_ascii_art:
         output_png_ascii_frames =[] #path to files
         images_list=[] # PIL.image obj list
         
-        
-        
         #ascii_frames is a Ascii_art object list
         for a in ascii_frames:
             
@@ -129,7 +101,6 @@ class Animated_ascii_art:
             for a in asciiart_image:
                 print(a)
             
-       
         for ascii_frame in ascii_frames:
             
             #create empty png file with same name as ascii frame file
@@ -137,8 +108,6 @@ class Animated_ascii_art:
         
             output_png_frame = self.output_png_ascii_frames + '/' + ascii_frame_plain_file
             images_list.append(self.write_text_on_plain_png(ascii_frame['filepath'],output_png_frame[0])) #generate tect on in plain file
-            
-            
             output_png_ascii_frames.append(output_png_frame)
         return output_png_ascii_frames,images_list
     
@@ -146,20 +115,15 @@ class Animated_ascii_art:
     def crop_image(self,img,x1,y1,x2,y2): 
         area = (x1, y1, x2, y2)
         cropped_img = img.crop(area)
-        #cropped_img.show()
         return cropped_img
     
      #create empty png file with same name as ascii frame file and fill with ascii
     def write_text_on_plain_png(self,ascii_frame,output_png_frame):
         
         with open (ascii_frame) as f:
-            
             lines = [line.rstrip() for line in f]
-        print("line LEN:")  
-        print(len(lines[0]))
-      
-        #zadbac o proporcje obrazka gif zaleznie od ilosci znakow x,y w ascii
-        #1 jeli x i y w obrazku wejscowym sa rowne to
+
+        #care about gif ratio depending on char quantity in ascii file
         if self.file_size['width'] == self.file_size['height']:
             mx = 6
             my = 6
@@ -168,12 +132,10 @@ class Animated_ascii_art:
             mx=6
             my= int( (self.file_size['height'] * mx) // self.file_size['width'])
 
-        
-        #ratio_factor = int((len(lines) * 190)/270)
+    
         x = mx * len(lines[0])
-        y = my * len(lines[0]) #+ ratio_factor
+        y = my * len(lines[0]) 
         
-        #font = PIL.ImageFont.truetype("arial.ttf", 10)
 
         img = PIL.Image.new("RGBA", (x, y), (0, 255, 0 ,0))  
         latest_index=None      
@@ -182,12 +144,7 @@ class Animated_ascii_art:
             draw = PIL.ImageDraw.Draw(img)    
             draw.text((0, index*6),l, (0,0,0),spacing =10,align ="center")
         
-        # crop_val = self.crop_val(img)
-        # print("crop val")
-        # print (crop_val)
-        # if (crop_val >0): # przycinanie gdy obrazek ascii mniejszy niz fizyczna wysokosc zdjecia
-        #     print("crop")
-        #     img = self.crop_image(img,0,0,x,y - crop_val*15)
+
         
         img.save(output_png_frame  , "PNG") 
         return img
@@ -210,10 +167,8 @@ class Animated_ascii_art:
             
     #merge frames in animation
     def create_gif_animation_from_png_list(self,png_list_images):
-        #gif_ascii_art_animation = self.gif_output_dir +  '/animated_ascii_art.gif'
         
-        gif_ascii_art_animation = self.gif_output_dir + '/' + self.gif_output_name
-        
+        gif_ascii_art_animation = self.gif_output_dir + '/' + self.gif_output_name 
         png_list_images[0].save(gif_ascii_art_animation,
                save_all=True, append_images=png_list_images[1:], optimize=False, duration=self.current_gif_duration_list, loop=0)
         return gif_ascii_art_animation
@@ -227,7 +182,6 @@ class Animated_ascii_art:
             print("Directory created")
             
             
-    def clean_up(self):
-        pass
+
         
     

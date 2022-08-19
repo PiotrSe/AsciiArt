@@ -7,13 +7,7 @@ class Ascii_art:
     
     def __init__(self):
         
-        #self.ASCII_CHARS = ["@", "#", "$", "%", "?", "*", "+", ";", ":", ",", "."]
-        self.ASCII_CHARS = ["@", "J", "D", "%", "*", "P", "+", "Y", "$", ",", "."]
-        #self.ASCII_CHARS = [".",",","$","Y","+","P","*","%","D","J","@" ]
-        
-        
-    
-     
+        self.ASCII_CHARS = ["@", "J", "D", "%", "*", "P", "+", "Y", "$", ",", "."]  
     def resize_image(self,image,width_image = 200):
         try:
             new_width = width_image
@@ -23,9 +17,7 @@ class Ascii_art:
             result = image.resize((int(new_width),int(new_height)))
             
         except Exception as e:
-            
-            result = False
-            
+            result = False  
         return  result
        
     
@@ -55,7 +47,7 @@ class Ascii_art:
         
         
        small_image = self.resize_image(image,width_image)
-       if small_image != False: # obrazek poprawny
+       if small_image != False: # image ok
        
             small_image = self.grayscale(small_image)
             img_width = small_image.width
@@ -63,11 +55,11 @@ class Ascii_art:
             ascii_string_len = len(ascii_string)
             ascii_final = ""
         
-                #zadbanie o proporcje obrazka ascii
+            #keep image ratio
             for i in range(0,ascii_string_len,img_width):
                     ascii_final += ascii_string[i:i+img_width] + "\n"
                     
-                # ascii image zapis   
+                # save ascii image 
                 
             current_file_path ='media/ascii/ascii_image_' + datetime.now().strftime("%H_%M_%S") +"_"+ str(datetime.now().microsecond) + ".txt"
             with open(current_file_path,"w") as f:

@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.sites.shortcuts import get_current_site
@@ -22,26 +21,6 @@ def ascii(request):
 
 def animated_ascii(request):
     return render(request,'animated_ascii.html')
-
-@csrf_exempt
-def sum(request):
-    if request.method == 'POST':
-        print(request.POST)
-        try:
-            
-            x= request.POST['x']
-            y= request.POST['y']
-               
-            sum = int(x) +int(y)
-            data = str(sum)
-            result = json.dumps(data)
-            
-        except Exception as e:
-            print(str(e))
-            result = json.dumps("errora masz: "  + str(request.POST))
-            
-            
-    return HttpResponse(result) 
 
 #created for web site - return href link to ascii art file
 
@@ -88,7 +67,7 @@ def do_animated_ascii_art(request):
     else: # file incorrect return err
         link = '<b>' + context['message'] + '</b>'
 
-    #zwracamy link do pliku z ascii
+    #rturn link o ascii art file
     result = json.dumps(link)
     return HttpResponse(result)
 
@@ -116,16 +95,13 @@ def do_ascii_art_web(request):
     context = ascii_art.do_ascii_art(uploaded_file,image_width)
     if context['filepath']!= None: # image file correct
         link = '<a href=/%s>Data ready - click</a>' % context['filepath']
-        #link = context['filepath']
-        
+          
     else: # file incorrect return err
         link = '<b>' + context['ascii'] + '</b>'
 
     #zwracamy link do pliku z ascii
     result = json.dumps(link)
     return HttpResponse(result)
-
-
 
 # return plain path to asci art file
 @csrf_exempt
@@ -139,13 +115,11 @@ def do_ascii_art(request):
         
         print("image_width:")
         print(image_width)
-        #image_width = 60
         
         if image_width  > 270 or int(image_width) < 50:
         
              return HttpResponse("Image width value out of range.Enter 50 - 270")
-
-        
+    
     except Exception as e:
         print(str(e))
         return HttpResponse("no file selected")
@@ -158,6 +132,5 @@ def do_ascii_art(request):
     else: # file incorrect return err
         out_file = '<b>' + context['ascii'] + '</b>'
 
-    #zwracamy link do pliku z ascii
     result = json.dumps(out_file)
     return HttpResponse(result)

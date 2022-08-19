@@ -7,7 +7,7 @@ from django.conf.urls.static import static
 
 admin.autodiscover()
 
-import hello.views
+
 import ascii_art.views
 
 # To add a new path, first import the app:
@@ -19,22 +19,15 @@ import ascii_art.views
 # Learn more here: https://docs.djangoproject.com/en/2.1/topics/http/urls/
 
 urlpatterns = [
-   # path("", hello.views.index, name="index"),
-    # path("db/", hello.views.db, name="db"),
-    # path("admin/", admin.site.urls),
 
-    
     path('do_ascii_art/',ascii_art.views.do_ascii_art,name = 'do_ascii_art'),
     path('do_ascii_art_web/',ascii_art.views.do_ascii_art_web,name = 'do_ascii_art_web'),
     path('do_animated_ascii_art/',ascii_art.views.do_animated_ascii_art,name = 'do_animated_ascii_art'),
-     path('sum/',ascii_art.views.sum,name = 'sum'),
-    
-    
+     
     path("",ascii_art.views.menu,name= "menu"),
     path("menu/",ascii_art.views.menu,name= "menu"),
     path("ascii/",ascii_art.views.ascii,name= "ascii"),
     path("animated_ascii/",ascii_art.views.animated_ascii,name= "animated_ascii"),
-   
         
 ]
 
